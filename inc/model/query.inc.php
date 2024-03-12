@@ -19,7 +19,7 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos os resultados em um array associativo.
         }
 
-        public function getQueryFuncionarios () : array //Metodo para encapsular "queryFuncionarios()";
+        public function getQueryFuncionarios () : array //Metodo para encapsular "queryFuncionarios();
         {
             return $this->queryFuncionarios();
         }
