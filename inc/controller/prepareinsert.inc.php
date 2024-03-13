@@ -1,6 +1,8 @@
 <?php
     require_once "./hashpw.inc.php";
     require_once "./verifyerrors.inc.php";
+    require_once "../model/insertuser.inc.php";
+    require_once "../core/connection.inc.php";
 
     class PrepareInsert
     {
@@ -10,7 +12,7 @@
         private string $level;
         private object $pdo;
 
-        public function __construct(string $username, string $email, string $password, string $level, string $pdo) 
+        public function __construct(string $username, string $email, string $password, string $level, object $pdo) 
         {
             $this->username = $username;
             $this->email = $email;
@@ -21,7 +23,7 @@
 
         private function VerifyErrors() : bool
         {
-            $verifyerrors = new VerifyErrors($this->username, $this->email, $this->password, $this->level);
+            $verifyerrors = new VerifyErrors($this->username, $this->email, $this->password, $this->level, $this->pdo);
             return $verifyerrors->getErrors();
         }
 
@@ -40,7 +42,15 @@
         {
             if (!$this->HashPw()) {
                 $insertUser = new InsertUser($this->username, $this->email, $this->password, $this->level, $this->pdo);
-                $insertUser->execInsert();
+                $insertUser->execInsert($this->pdo);
             }
         }
+
+        public function prepareExec() 
+        {
+            $this->prepareInsert();
+        }
     }
+
+    $test = new PrepareInsert("Jooo", "jooo@gmail.com", "1234", "1", $pdo);
+    $test->prepareExec();

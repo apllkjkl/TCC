@@ -8,14 +8,16 @@
         private string $email;
         private string $password;
         private string $level;
+        private object $pdo;
         private array $errors = [];//Array para armezar erros
         
-        public function __construct(string $username, string $email, string $password, string $level) 
+        public function __construct(string $username, string $email, string $password, string $level, object $pdo) 
         {
             $this->username = $username;
             $this->email = $email;
             $this->password = $password;
             $this->level = $level;
+            $this->pdo = $pdo;
         }
 
         private function isEmpty() : bool //Função para verificar inputs vazios.
@@ -38,14 +40,13 @@
 
         private function isDataTaken() : bool //Faz uma quert no banco através de outra classe para verificar se os dados do usuario ja existem no banco.
         {
-            $dbdata = $this->getQueryFuncionarios();//Chama metodo de quuery da tabela funcionarios.
+            $dbdata = $this->getQueryFuncionarios($this->pdo); //Chama metodo de quuery da tabela funcionarios.
             for($i = 0; $i < count($dbdata); $i++) { //Loping feito a quantidade de linhas na tabela.
                 if($dbdata[$i]["nome"] == $this->username || $dbdata[$i]["email"] == $this->email) { //Verifica se o email ou nome já estão cadastrados.
                     return true;
                 }
-
-            return false;
             }
+            return false;
         }
 
         private function haveErrors() : bool //Metodo que verifica se alguma das verificações de erros reotrna verdadeiro.

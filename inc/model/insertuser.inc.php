@@ -15,12 +15,13 @@
             $this->email = $email;
             $this->password = $password;
             $this->level = $level;
+            $this->pdo = $pdo;
         }
 
-        private function insertUser() //Metodo para inserseção de dados no banco
+        private function insertUser($pdo) //Metodo para inserseção de dados no banco
         {
-            $query = "INSERT INTO funcionarios ('nome', 'email', 'senha', 'nivel') VALUES (':username', ':email', ':senha', ':level');";//Prepare stetaments para não acontecer injeção SQL.
-            $stmt = $this->pdo->preapre($query);
+            $query = "INSERT INTO funcionarios (nome, email, senha, nivel) VALUES (:username, :email, :senha, :level);";//Prepare stetaments para não acontecer injeção SQL.
+            $stmt = $pdo->prepare($query);
             $stmt->bindParam(":username", $this->username);//Usa parametros da função para evitar SQL injection.
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":senha", $this->password);
@@ -29,8 +30,8 @@
             $stmt->execute();
         }
 
-        public function execInsert()
+        public function execInsert($pdo)
         {
-            $this->insertUser();
+            $this->insertUser($this->pdo);
         }
     }
