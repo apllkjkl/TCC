@@ -30,7 +30,7 @@
             $stmt->execute();
         }
 
-        public function execInsert($pdo)
+        public function execInsert()
         {
             $this->insertUser($this->pdo);
         }

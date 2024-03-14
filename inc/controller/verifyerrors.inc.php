@@ -1,6 +1,7 @@
 <?php
-    require_once "../core/connection.inc.php";
+    include_once($_SERVER['DOCUMENT_ROOT']."/inc/core/connection.inc.php");
     require_once "../model/query.inc.php";
+    session_start();
 
     class VerifyErrors extends Query
     {
@@ -65,6 +66,7 @@
                 $this->errors["taken"] = ["Dados já cadastrados"];
             }
 
+            $_SESSION['errors'] = $this->errors;
             return $haserror;
         }
 

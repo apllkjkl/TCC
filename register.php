@@ -1,3 +1,8 @@
+<?php 
+    require_once "./inc/controller/prepareinsert.inc.php";
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -19,5 +24,10 @@
         <input type="checkbox" name="administrador">
         <input type="submit">
     </form>
+
+    <?php 
+        $test =  new PrepareInsert("andre", "andre@gmail.com", "1234", 1, $pdo);
+        echo $test->prepareExec();
+    ?>
 </body>
 </html>

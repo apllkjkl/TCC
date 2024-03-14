@@ -1,8 +1,10 @@
 <?php
-    require_once "./hashpw.inc.php";
-    require_once "./verifyerrors.inc.php";
+    require_once __DIR__ . "/hashpw.inc.php";
+    require_once __DIR__ . "/verifyerrors.inc.php";
     require_once "../model/insertuser.inc.php";
     require_once "../core/connection.inc.php";
+    require_once "../view/registersucces.inc.php";
+    require_once "../view/registerfailed.inc.php";
 
     class PrepareInsert
     {
@@ -43,7 +45,22 @@
             if (!$this->HashPw()) {
                 $insertUser = new InsertUser($this->username, $this->email, $this->password, $this->level, $this->pdo);
                 $insertUser->execInsert($this->pdo);
+                return $this->getMessageSucces();
+            } else {
+                return $this->getMessagefail();
             }
+        }
+
+        private function getMessageSucces() 
+        {
+            $succes =  new RegisterSucces();
+            echo $succes->getMessage();
+        }
+
+        private function getMessagefail()
+        {
+            $fail = new RegisterFailed();
+            echo $fail->getMessage();
         }
 
         public function prepareExec() 
@@ -51,6 +68,3 @@
             $this->prepareInsert();
         }
     }
-
-    $test = new PrepareInsert("Jooo", "jooo@gmail.com", "1234", "1", $pdo);
-    $test->prepareExec();

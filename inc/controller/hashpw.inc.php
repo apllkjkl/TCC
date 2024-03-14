@@ -1,7 +1,6 @@
 <?php
-    require_once "./verifyerrors.inc.php";
 
-    class HashPw extends VerifyErrors 
+    class HashPw
     {
         private string $password;
 
