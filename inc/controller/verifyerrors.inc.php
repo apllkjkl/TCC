@@ -1,6 +1,6 @@
 <?php
-    include_once($_SERVER['DOCUMENT_ROOT']."/inc/core/connection.inc.php");
-    require_once "../model/query.inc.php";
+    include_once($_SERVER['DOCUMENT_ROOT']."/tcc/inc/core/connection.inc.php");
+    include_once($_SERVER['DOCUMENT_ROOT'] . "/tcc/inc/model/query.inc.php");
     session_start();
 
     class VerifyErrors extends Query

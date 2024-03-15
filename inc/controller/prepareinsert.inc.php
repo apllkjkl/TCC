@@ -1,10 +1,10 @@
 <?php
     require_once __DIR__ . "/hashpw.inc.php";
     require_once __DIR__ . "/verifyerrors.inc.php";
-    require_once "../model/insertuser.inc.php";
-    require_once "../core/connection.inc.php";
-    require_once "../view/registersucces.inc.php";
-    require_once "../view/registerfailed.inc.php";
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/model/insertuser.inc.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/core/connection.inc.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/view/registersucces.inc.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/view/registerfailed.inc.php');
 
     class PrepareInsert
     {
@@ -43,24 +43,13 @@
         private function prepareInsert() 
         {
             if (!$this->HashPw()) {
+                $_SESSION['REGISTER_STATUS'] = 'succes';
                 $insertUser = new InsertUser($this->username, $this->email, $this->password, $this->level, $this->pdo);
                 $insertUser->execInsert($this->pdo);
-                return $this->getMessageSucces();
             } else {
-                return $this->getMessagefail();
+                $_SESSION['REGISTER_STATUS'] = 'fail';
+                header("Location: ../../register.php");
             }
-        }
-
-        private function getMessageSucces() 
-        {
-            $succes =  new RegisterSucces();
-            echo $succes->getMessage();
-        }
-
-        private function getMessagefail()
-        {
-            $fail = new RegisterFailed();
-            echo $fail->getMessage();
         }
 
         public function prepareExec() 

@@ -1,6 +1,6 @@
 <?php 
     require_once "./inc/controller/prepareinsert.inc.php";
-    session_start();
+    require_once "./inc/controller/registermessages.inc.php";
 ?>
 
 <!DOCTYPE html>
@@ -11,23 +11,30 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="" method="POST">
+    <form action="inc/controller/registerhandler.inc.php" method="POST">
         <label for="nome">Nome: </label>
-        <input type="text" name="nome">
+        <input type="text" name="username">
         <label for="email">Email:</label>
         <input type="email" name="email">
         <label for="senha">Senha</label>
-        <input type="password" name="senha">
-        <label for="funcionario">Funcionario</label>
-        <input type="checkbox" name="funcionario">
-        <label for="administrador">Administrador</label>
-        <input type="checkbox" name="administrador">
+        <input type="password" name="password">
+        <select name="level">
+            <option value="1">Admin</option>
+            <option value="2">Funcionario</option>
+        </select>
         <input type="submit">
     </form>
 
-    <?php 
-        $test =  new PrepareInsert("andre", "andre@gmail.com", "1234", 1, $pdo);
-        echo $test->prepareExec();
-    ?>
+    <?php
+        $message = new RegisterMessages();
+        if (isset($_SESSION['REGISTER_STATUS'])) {            
+            if ($_SESSION['REGISTER_STATUS'] == 'succes') {
+                echo $message->getMessageSucces();
+                unset($_SESSION['REGISTER_STATUS']);
+            } else if ($_SESSION['REGISTER_STATUS'] == 'fail') {
+                echo $message->getMessageFail();
+                unset($_SESSION['REGISTER_STATUS']);
+            }
+        }    ?>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php 
-    require_once "../core/connection.inc.php";
+    include_once($_SERVER['DOCUMENT_ROOT'] . "/tcc/inc/core/connection.inc.php");
 
     class Query
     {
