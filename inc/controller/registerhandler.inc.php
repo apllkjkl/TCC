@@ -12,5 +12,6 @@
 
         header("Location: ../../register.php");
     } else {
+        header("Location: ../../register.php");
         die();
     }
