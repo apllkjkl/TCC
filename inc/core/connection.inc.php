@@ -1,7 +1,7 @@
 <?php 
     $dbh = "mysql:host=localhost;dbname=tcc";
     $dbusername = "root";
-    $dbpassword = ""; //Se usar o wamp esse campo deve ficar vazio.
+    $dbpassword = "usbw"; //Se usar o wamp esse campo deve ficar vazio.
 
     try {
         $pdo = new PDO($dbh, $dbusername, $dbpassword);

@@ -1,6 +1,6 @@
 <?php
-    require_once __DIR__ . "/hashpw.inc.php";
-    require_once __DIR__ . "/verifyerrors.inc.php";
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/controller/hashpw.inc.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/controller/verifyerrors.inc.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/model/insertuser.inc.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/core/connection.inc.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/tcc/inc/view/registersucces.inc.php');
