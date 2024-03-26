@@ -25,13 +25,13 @@
 
         private function VerifyErrors() : bool
         {
-            $verifyerrors = new VerifyErrors($this->username, $this->email, $this->password, $this->level, $this->pdo);//Chama o metodo VerifyErrros
-            return $verifyerrors->getErrors();
+            $verifyerrors = new VerifyErrors($this->username, $this->email, $this->password, $this->level, $this->pdo); //Chama o metodo VerifyErrros
+            return $verifyerrors->getRegisterErrors();
         }
 
         private function HashPw() 
         {
-            if ($this->VerifyErrors()) {//Verifica se verify erros retorna verdadeira, se sim, retorna true e não faz nada, se retorna falso, pega a hash da senha.
+            if ($this->VerifyErrors()) { //Verifica se verify erros retorna verdadeira, se sim, retorna true e não faz nada, se retorna falso, pega a hash da senha.
                 return true;
             } else {
                 $pw = new HashPw($this->password);
@@ -45,7 +45,7 @@
             if (!$this->HashPw()) {//Se o HashPw retornar falso, ele prepaara para inserrir o usuario no banco de dados.
                 $_SESSION['REGISTER_STATUS'] = 'succes';//Define a variavel 'REGISTER_STATUS' para succes mais tarde usar em uma verificação.
                 $insertUser = new InsertUser($this->username, $this->email, $this->password, $this->level, $this->pdo);//Cria um objeto da classe insertUser
-                $insertUser->execInsert($this->pdo);//Executa o metódo de inserção no banco de dados
+                $insertUser->execInsert();//Executa o metódo de inserção no banco de dados
             } else {
                 $_SESSION['REGISTER_STATUS'] = 'fail';
                 header("Location: ../../register.php");

@@ -5,7 +5,7 @@
     {
         private function queryFuncionarios($pdo) : array //Metodo percorre a tabela funcionarios.
         {
-            $query = "SELECT nome, email FROM funcionarios"; //Seleciona nome e email da tabela funcionarios
+            $query = "SELECT nome, email, senha FROM funcionarios"; //Seleciona nome e email da tabela funcionarios
             $stmt = $pdo->prepare($query); //Prepare stetament para evitar injeções SQL.
             $stmt->execute(); //Executa Query.
 

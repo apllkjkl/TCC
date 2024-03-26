@@ -1,6 +1,7 @@
 <?php
     include_once($_SERVER['DOCUMENT_ROOT']."/tcc/inc/core/connection.inc.php");
     include_once($_SERVER['DOCUMENT_ROOT'] . "/tcc/inc/model/query.inc.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/tcc/inc/controller/hashpw.inc.php");
     session_start();
 
     class VerifyErrors extends Query
@@ -10,7 +11,7 @@
         private string $password;
         private string $level;
         private object $pdo;
-        private array $errors = [];//Array para armezar erros
+        private array $errors = []; //Array para armezar erros
         
         public function __construct(string $username, string $email, string $password, string $level, object $pdo) 
         {
@@ -21,7 +22,14 @@
             $this->pdo = $pdo;
         }
 
-        private function isEmpty() : bool //Função para verificar inputs vazios.
+        private function getHash(string $password) : string
+        {
+            $hashpw = new HashPw($password);
+            $this->passowrd = $hashpw->getHash();
+            return $this->password;
+        }
+
+        private function isEmptyRegister() : bool //Função para verificar inputs vazios.
         {
             if (empty($this->username) || empty($this->email) || empty($this->password) || empty($this->level)) { //Filtro empty() verifica se algum input está vazio.
                 return true;
@@ -39,7 +47,7 @@
             return false;
         }
 
-        private function isDataTaken() : bool //Faz uma quert no banco através de outra classe para verificar se os dados do usuario ja existem no banco.
+        private function isDataTaken() : bool //Faz uma query no banco através de outra classe para verificar se os dados do usuario ja existem no banco.
         {
             $dbdata = $this->getQueryFuncionarios($this->pdo); //Chama metodo de quuery da tabela funcionarios.
             for($i = 0; $i < count($dbdata); $i++) { //Loping feito a quantidade de linhas na tabela.
@@ -50,7 +58,24 @@
             return false;
         }
 
-        private function haveErrors() : bool //Metodo que verifica se alguma das verificações de erros reotrna verdadeiro.
+        private function isDataCorrect() : bool 
+        {
+            $dbdata = $this->getQueryFuncionarios($this->pdo);
+            for($i = 0; $i < count($dbdata); $i++) {
+                if($dbdata[$i]["email"] == $this->email && $dbdata[$i]['password'] == $this->getHash($this->password)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private function function isEmptyLogin() : bool
+        {
+
+            if ($this->email()) {
+        }
+
+        private function registerErrors() : bool //Metodo que verifica se alguma das verificações de erros reotrna verdadeiro.
         {
             $haserror = false;
             if ($this->isEmpty()) {
@@ -59,7 +84,7 @@
             }
             if($this->isEmailValid()) {
                 $haserror = true;
-                $this->errors["invalid_format"] = ["Formato invalido"];
+                $this->errors["invalid_format"] = ["Formato de email inválido"];
             }
             if ($this->isDataTaken()) {
                 $haserror = true;
@@ -70,9 +95,25 @@
             return $haserror;
         }
 
-
-        public function getErrors() : bool //Chama metodo "haveErrors", proposito desta função é apenas encapsulamento.
+        public function getRegisterErrors() : bool //Chama metodo "haveErrors", proposito desta função é apenas encapsulamento.
         {
-            return $this->haveErrors();    
+            return $this->registerErrors();    
+        }
+        private function loginErrors() : bool 
+        {
+            $haserrors = false;  
+            if ($this->isEmpty()) {
+                $haserrors = true;
+                $this->errors['empty'] = ['Preencha todos o campos'];
+            }
+            if($this->isEmailValid()) {
+                $haserrors = true;
+                $this->errors['inalid_format'] = ['Formato de email inválido'];
+            }
+            if ($this->isDataTaken()) {
+                $haserrors = true;
+                $this->errors['invalid _data'] = ['Dados incorretos'];
+            }
+            return $haserrors;
         }
     }
